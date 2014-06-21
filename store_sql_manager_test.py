@@ -52,7 +52,7 @@ class StoreSqlManagerTests(unittest.TestCase):
         result = store_sql_manager.get_quantity("test_store", "bag")
         self.assertEqual(4, result)
 
-    def test_sell_more_bag(self):
+    def test_sell_more_bags(self):
         store_sql_manager.sell_item("test_store", "bag")
         store_sql_manager.sell_item("test_store", "bag")
         result = store_sql_manager.get_quantity("test_store", "bag")
