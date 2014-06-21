@@ -5,21 +5,33 @@ cursor = conn.cursor()
 
 
 def create_table():
-    create_query = '''create table if not exists
+    create_query = """create table if not exists
         stores(id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                item TEXT,
-                description TEXT,
-                providers_price REAL DEFAULT 0,
-                selling_price REAL DEFAULT 0,
-                quantity INTEGER DEFAULT 0)'''
+            name TEXT,
+            item TEXT,
+            description TEXT,
+            providers_price REAL DEFAULT 0,
+            selling_price REAL DEFAULT 0,
+            quantity INTEGER DEFAULT 0)"""
 
     cursor.execute(create_query)
 
 
-def add_item(name, item, description, providers_price, selling_price, quantity):
-    insert_query = "insert into stores (name, item, description, providers_price, selling_price, quantity) values (?, ?, ?, ?, ?, ?)"
-    cursor.execute(insert_query, (name, item, description, providers_price, selling_price, quantity))
+def add_item(name,
+             item,
+             description,
+             providers_price,
+             selling_price,
+             quantity):
+
+    insert_query = """INSERT into stores
+    (name, item, description, providers_price, selling_price, quantity)
+     values (?, ?, ?, ?, ?, ?)"""
+
+    cursor.execute(
+        insert_query,
+        (name, item, description, providers_price, selling_price, quantity)
+    )
     conn.commit()
 
 
@@ -37,7 +49,9 @@ def sell_item(name, item):
 
 
 def view_items():
-    select_query = "SELECT id, name, item, description, selling_price FROM stores WHERE quantity != 0"
+    select_query = """SELECT id, name, item, description, selling_price
+                      FROM stores
+                      WHERE quantity != 0"""
     result = cursor.execute(select_query)
     for row in result:
         print(row)
@@ -45,7 +59,8 @@ def view_items():
 
 
 def view_item(id):
-    select_query = "SELECT id, name, item, description, selling_price FROM stores WHERE quantity != 0 AND id = ?"
+    select_query = """SELECT id, name, item, description, selling_price FROM
+                   stores WHERE quantity != 0 AND id = ?"""
     result = cursor.execute(select_query, (id,)).fetchone()
     if result:
         print(result)
@@ -63,4 +78,26 @@ def delete_store(name):
 def load_items(quantity):
     update_query = "UPDATE stores SET quantity = ? WHERE quantity = 0"
     cursor.execute(update_query, (quantity, ))
+    conn.commit()
+
+
+def create_staff_table():
+    create_query = """create table if not exists
+        staff(name TEXT,
+            username TEXT,
+            password TEXT)"""
+
+    cursor.execute(create_query)
+
+
+def get_staff_information(name):
+    select_query = "SELECT username, password FROM staff WHERE name = ?"
+    result = cursor.execute(select_query, (name, )).fetchone()
+    return result
+
+
+def add_staff_information(name, username, password):
+    insert_query = """INSERT into staff (name, username, password)
+                      values (?, ?, ?)"""
+    cursor.execute(insert_query, (name, username, password))
     conn.commit()
