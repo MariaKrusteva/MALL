@@ -42,26 +42,35 @@ def get_quantity(name, item):
     return quantity[0]
 
 
+def get_price(name, item):
+    select_query = """SELECT selling_price
+                      FROM stores
+                      WHERE name = ? AND item = ? """
+    cursor.execute(select_query, (name, item))
+    price = cursor.fetchone()
+    return price[0]
+
+
 def sell_item(name, item):
     update_query = "UPDATE stores SET quantity = ? WHERE name = ? AND item = ?"
     cursor.execute(update_query, (get_quantity(name, item) - 1, name, item))
     conn.commit()
 
 
-def view_items():
-    select_query = """SELECT id, name, item, description, selling_price
+def view_items(name):
+    select_query = """SELECT id, item, description, selling_price
                       FROM stores
-                      WHERE quantity != 0"""
-    result = cursor.execute(select_query)
+                      WHERE quantity != 0 AND name = ?"""
+    result = cursor.execute(select_query, (name, ))
     for row in result:
         print(row)
     return True
 
 
-def view_item(id):
-    select_query = """SELECT id, name, item, description, selling_price FROM
-                   stores WHERE quantity != 0 AND id = ?"""
-    result = cursor.execute(select_query, (id,)).fetchone()
+def view_item(name, id):
+    select_query = """SELECT id, item, description, selling_price FROM
+                   stores WHERE quantity != 0 AND name = ? AND id = ?"""
+    result = cursor.execute(select_query, (name, id)).fetchone()
     if result:
         print(result)
         return True
