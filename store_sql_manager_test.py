@@ -47,6 +47,10 @@ class StoreSqlManagerTests(unittest.TestCase):
         result = store_sql_manager.get_quantity("test_store", "book")
         self.assertEqual(6, result)
 
+    def test_get_price_of_book(self):
+        result = store_sql_manager.get_price("test_store", "book")
+        self.assertEqual(21, result)
+
     def test_sell_one_bag(self):
         store_sql_manager.sell_item("test_store", "bag")
         result = store_sql_manager.get_quantity("test_store", "bag")
@@ -59,16 +63,16 @@ class StoreSqlManagerTests(unittest.TestCase):
         self.assertEqual(3, result)
 
     def test_view_items(self):
-        self.assertTrue(store_sql_manager.view_items())
+        self.assertTrue(store_sql_manager.view_items("test_store"))
 
     def test_view_item(self):
-        self.assertTrue(store_sql_manager.view_item(1))
+        self.assertTrue(store_sql_manager.view_item("test_store", 1))
 
     def test_view_item_with_invalid_id(self):
-        self.assertFalse(store_sql_manager.view_item(4))
+        self.assertFalse(store_sql_manager.view_item("test_store2", 4))
 
     def test_view_item_with_zero_quantity(self):
-        self.assertFalse(store_sql_manager.view_item(3))
+        self.assertFalse(store_sql_manager.view_item("test_store2", 3))
 
     def test_delete_store(self):
         store_sql_manager.delete_store("test_store2")
