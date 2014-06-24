@@ -7,6 +7,10 @@ class Store:
         self._type = type
         self._money = money
 
+        store_sql_manager.add_staff_information(self.name,
+                                                self.name + "123",
+                                                "really987HARD654password")
+
     @property
     def name(self):
         return self._name
@@ -15,6 +19,14 @@ class Store:
     def name(self, value):
         self._name = value
 
+    @property
+    def money(self):
+        return self._money
+
+    @money.setter
+    def money(self, value):
+        self._money = value
+
     def is_part_of_the_staff(self):
         username = input("username: ")
         password = input("password: ")
@@ -22,10 +34,10 @@ class Store:
         return username == valid[0] and password == valid[1]
 
     def staff_menu(self):
-        print("""for loading the sold out items insert 1,
-                 for deleting the store insert 2
-                 for adding items insert 3
-                 if you want to exit insert 4""")
+        print("for loading the sold out items insert 1")
+        print("for deleting the store insert 2")
+        print("for adding items insert 3")
+        print("if you want to exit insert 4")
 
         staff_choice = input("+++")
 
@@ -70,16 +82,18 @@ class Store:
         buyer_choice = input("+++")
 
         if buyer_choice == "1":
-            store_sql_manager.view_items()
+            store_sql_manager.view_items(self.name)
 
         elif buyer_choice == "2":
             id = input("id: ")
-            store_sql_manager.view_item(id)
+            store_sql_manager.view_item(self.name, id)
 
         elif buyer_choice == "3":
             item = input("item you want to buy: ")
             store_sql_manager.sell_item(self.name, item)
             print("---you just bought {}---".format(item))
+            price = store_sql_manager.get_price(self.name, item)
+            self.money += price
 
         elif buyer_choice == "4":
             return False
@@ -89,13 +103,7 @@ class Store:
 
         return True
 
-    def enter_the_store(self):
-        store_sql_manager.create_staff_table()
-        store_sql_manager.create_table()
-        store_sql_manager.add_staff_information(self.name,
-                                                self.name + "123",
-                                                "really987HARD654password")
-
+    def enter(self):
         print("Welcome to {} !".format(self.name))
         print("If you are part of the staff please insert 1")
         print("If you want to shop here please insert 2")
