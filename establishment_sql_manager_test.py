@@ -2,7 +2,7 @@ import unittest
 import establishment_sql_manager
 
 
-class EstablishmentSqlManagerTess(unittest.TestCase):
+class EstablishmentSqlManagerTest(unittest.TestCase):
 
     def setUp(self):
         establishment_sql_manager.create_table()
