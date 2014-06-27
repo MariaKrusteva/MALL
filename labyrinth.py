@@ -104,10 +104,3 @@ def start():
         if finish(current_possition, number_of_rows, number_of_columns):
             print("You win!")
             break
-
-
-def main():
-    start()
-
-if __name__ == '__main__':
-    main()
