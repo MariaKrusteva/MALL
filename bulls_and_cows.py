@@ -45,7 +45,7 @@ def start():
     print("Dont forget to insert number with 4 digits")
     print("Here we go!")
     computer_number = make_random_number()
-    print(computer_number)
+
     for i in range(0, int(attempts)):
         assumption = input("Your number: ")
 
